@@ -15,7 +15,7 @@ def falling(n, k):
     while(k >0):
         result *= n
         n,k = n-1,k-1
-    return result*1
+    return result
 
 
 def sum_digits(y):
