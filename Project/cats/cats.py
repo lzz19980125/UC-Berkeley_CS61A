@@ -19,6 +19,10 @@ def choose(paragraphs, select, k):
     "*** YOUR CODE HERE ***"
     # END PROBLEM 1
 
+    results = [x for x in paragraphs if (select(x)) ]
+    if (results == None):
+        return None
+    return results[k]
 
 def about(topic):
     """Return a select function that returns whether a paragraph contains one
@@ -35,6 +39,12 @@ def about(topic):
     "*** YOUR CODE HERE ***"
     # END PROBLEM 2
 
+    def f(x):
+        for j in topic:
+            if j in lower(x):
+                return True
+    return f
+
 
 def accuracy(typed, reference):
     """Return the accuracy (percentage of words typed correctly) of TYPED
@@ -43,7 +53,7 @@ def accuracy(typed, reference):
     >>> accuracy('Cute Dog!', 'Cute Dog.')
     50.0
     >>> accuracy('A Cute Dog!', 'Cute Dog.')
-    0.0
+    33.33333333333333
     >>> accuracy('cute Dog.', 'Cute Dog.')
     50.0
     >>> accuracy('Cute Dog. I say!', 'Cute Dog.')
@@ -58,6 +68,18 @@ def accuracy(typed, reference):
     # BEGIN PROBLEM 3
     "*** YOUR CODE HERE ***"
     # END PROBLEM 3
+    typed_words = typed.split()
+    reference_words = reference.split()
+    if len(typed_words) == 0:
+        return 0.0
+    sum = 0
+    for i in typed_words:
+        for j in reference_words:
+            if i in j:
+                sum += 1
+                continue
+    return (sum / len(typed_words)) * 100
+
 
 
 def wpm(typed, elapsed):
@@ -66,6 +88,7 @@ def wpm(typed, elapsed):
     # BEGIN PROBLEM 4
     "*** YOUR CODE HERE ***"
     # END PROBLEM 4
+    return len(typed)/5/(elapsed/60)
 
 
 def autocorrect(user_word, valid_words, diff_function, limit):
@@ -76,6 +99,8 @@ def autocorrect(user_word, valid_words, diff_function, limit):
     # BEGIN PROBLEM 5
     "*** YOUR CODE HERE ***"
     # END PROBLEM 5
+
+
 
 
 def shifty_shifts(start, goal, limit):
