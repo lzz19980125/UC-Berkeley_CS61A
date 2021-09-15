@@ -19,10 +19,9 @@ def skip_add(n):
     True
     """
     "*** YOUR CODE HERE ***"
-    if(n<=0):
+    if (n <= 0):
         return 0
-    return skip_add(n-2)+n
-
+    return skip_add(n - 2) + n
 
 def summation(n, term):
 
@@ -44,10 +43,9 @@ def summation(n, term):
     """
     assert n >= 1
     "*** YOUR CODE HERE ***"
-    if (n == 1):
-        return term(n)
+    if (n==1):
+        return term(1)
     return term(n)+summation(n-1,term)
-
 
 def paths(m, n):
     """Return the number of paths from one corner of an
@@ -63,13 +61,13 @@ def paths(m, n):
     1
     """
     "*** YOUR CODE HERE ***"
-    if((m==1) | (n==1)):
-        if((m==1) & (n==1)):
-            return 1
-        elif(n!=1):
-            return paths(m,n-1)
+    if ((m, n) == (1, 2) or (m, n) == (2, 1)):
+        return 1
+    if(m==1):
+        return paths(m,n-1)
+    if(n==1):
         return paths(m-1,n)
-    return paths(m-1,n)+paths(m,n-1)
+    return paths(m-1, n)+ paths(m, n-1)
 
 
 
@@ -118,58 +116,40 @@ def max_subseq(n, t):
     5
     """
     "*** YOUR CODE HERE ***"
+    if (t == 0):
+        return 0
+    if (n // (10 ** t) == 0):
+        return n
+    return max(max_subseq(n // 10, t), max_subseq(n // 10, t - 1) * 10 + n % 10)
 
-    def list(n):
-        return [int(x) for x in str(n)]
-    def subseq(s, turn=t, sum=0):
-        if (turn == 0):
-            return sum
-        if (turn > len(s)):
-            return n
-        flag = 0
-        for i in range(0, len(s) - turn + 1):
-            if s[i] > flag:
-                flag = s[i]
-        s_ = s[i + 1:]
-        sum = sum * 10 + flag
-        return subseq(s_, turn - 1, sum)
-    return subseq(list(n), t, 0)
+def add_chars(w1, w2):
+    """
+    Return a string containing the characters you need to add to w1 to get w2.
+    You may assume that w1 is a subsequence of w2.
 
-
-
-
-
-
-
-
-
-
-
-# def add_chars(w1, w2):
-#     """
-#     Return a string containing the characters you need to add to w1 to get w2.
-#
-#     You may assume that w1 is a subsequence of w2.
-#
-#     >>> add_chars("owl", "howl")
-#     'h'
-#     >>> add_chars("want", "wanton")
-#     'on'
-#     >>> add_chars("rat", "radiate")
-#     'diae'
-#     >>> add_chars("a", "prepare")
-#     'prepre'
-#     >>> add_chars("resin", "recursion")
-#     'curo'
-#     >>> add_chars("fin", "effusion")
-#     'efuso'
-#     >>> add_chars("coy", "cacophony")
-#     'acphon'
-#     >>> from construct_check import check
-#     >>> # ban iteration and sets
-#     >>> check(LAB_SOURCE_FILE, 'add_chars',
-#     ...       ['For', 'While', 'Set', 'SetComp']) # Must use recursion
-#     True
-#     """
-#     "*** YOUR CODE HERE ***"
-
+    >>> add_chars("owl", "howl")
+    'h'
+    >>> add_chars("want", "wanton")
+    'on'
+    >>> add_chars("rat", "radiate")
+    'diae'
+    >>> add_chars("a", "prepare")
+    'prepre'
+    >>> add_chars("resin", "recursion")
+    'curo'
+    >>> add_chars("fin", "effusion")
+    'efuso'
+    >>> add_chars("coy", "cacophony")
+    'acphon'
+    >>> from construct_check import check
+    >>> # ban iteration and sets
+    >>> check(LAB_SOURCE_FILE, 'add_chars',
+    ...       ['For', 'While', 'Set', 'SetComp']) # Must use recursion
+    True
+    """
+    "*** YOUR CODE HERE ***"
+    if (w1 == ""):
+        return w2
+    if (w1[0] == w2[0]):
+        return add_chars(w1[1:], w2[1:])
+    return w2[0] + add_chars(w1, w2[1:])
