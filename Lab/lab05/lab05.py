@@ -198,7 +198,15 @@ def sprout_leaves(t, leaves):
           2
     """
     "*** YOUR CODE HERE ***"
+    def recursion(t):
+        if (is_leaf(t)):
+            t = tree(t, b)
+            return
+        return recursion(branches(t))
 
+    for i in branches(t):
+        recursion(i)
+    return t
 
 
 # Abstraction tests for sprout_leaves and berry_finder
