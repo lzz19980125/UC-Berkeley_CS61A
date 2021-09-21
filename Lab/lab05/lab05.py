@@ -157,12 +157,10 @@ def berry_finder(t):
     True
     """
     "*** YOUR CODE HERE ***"
-    if label(t) == 'berry':
+    if (label(t) == 'berry'):
         return True
-    for b in branches(t):
-        if berry_finder(b):
-            return True
-    return False
+    return True in [berry_finder(i)  for i in branches(t)]
+
 
 def sprout_leaves(t, leaves):
     """Sprout new leaves containing the data in leaves at each leaf in
@@ -198,16 +196,9 @@ def sprout_leaves(t, leaves):
           2
     """
     "*** YOUR CODE HERE ***"
-    def recursion(t):
-        if (is_leaf(t)):
-            t = tree(t, b)
-            return
-        return recursion(branches(t))
-
-    for i in branches(t):
-        recursion(i)
-    return t
-
+    if (is_leaf(t)):
+        return tree(label(t),[[i] for i in leaves])
+    return tree(label(t),[sprout_leaves(k,leaves) for k in branches(t)])
 
 # Abstraction tests for sprout_leaves and berry_finder
 def check_abstraction():
@@ -282,44 +273,44 @@ def riffle(deck):
     return [deck[(i%2)*(len(deck)//2)+(i//2)] for i in range(len(deck))]
 
 
-# def add_trees(t1, t2):
-#     """
-#     >>> numbers = tree(1,
-#     ...                [tree(2,
-#     ...                      [tree(3),
-#     ...                       tree(4)]),
-#     ...                 tree(5,
-#     ...                      [tree(6,
-#     ...                            [tree(7)]),
-#     ...                       tree(8)])])
-#     >>> print_tree(add_trees(numbers, numbers))
-#     2
-#       4
-#         6
-#         8
-#       10
-#         12
-#           14
-#         16
-#     >>> print_tree(add_trees(tree(2), tree(3, [tree(4), tree(5)])))
-#     5
-#       4
-#       5
-#     >>> print_tree(add_trees(tree(2, [tree(3)]), tree(2, [tree(3), tree(4)])))
-#     4
-#       6
-#       4
-#     >>> print_tree(add_trees(tree(2, [tree(3, [tree(4), tree(5)])]), \
-#     tree(2, [tree(3, [tree(4)]), tree(5)])))
-#     4
-#       6
-#         8
-#         5
-#       5
-#     """
-#     "*** YOUR CODE HERE ***"
-#
-#
+def add_trees(t1, t2):
+    """
+    >>> numbers = tree(1,
+    ...                [tree(2,
+    ...                      [tree(3),
+    ...                       tree(4)]),
+    ...                 tree(5,
+    ...                      [tree(6,
+    ...                            [tree(7)]),
+    ...                       tree(8)])])
+    >>> print_tree(add_trees(numbers, numbers))
+    2
+      4
+        6
+        8
+      10
+        12
+          14
+        16
+    >>> print_tree(add_trees(tree(2), tree(3, [tree(4), tree(5)])))
+    5
+      4
+      5
+    >>> print_tree(add_trees(tree(2, [tree(3)]), tree(2, [tree(3), tree(4)])))
+    4
+      6
+      4
+    >>> print_tree(add_trees(tree(2, [tree(3, [tree(4), tree(5)])]), \
+    tree(2, [tree(3, [tree(4)]), tree(5)])))
+    4
+      6
+        8
+        5
+      5
+    """
+    "*** YOUR CODE HERE ***"
+
+
 # def build_successors_table(tokens):
 #     """Return a dictionary: keys are words; values are lists of successors.
 #
