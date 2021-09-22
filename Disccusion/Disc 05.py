@@ -43,35 +43,59 @@ def copy_tree(t):
 
 #################################################################################################################################
 #  Question 1.1
-# def max_path_sum(t):
-# 	result = []
-# 	def recursion(b):
-# 		if (is_leaf(b)):
-# 			return 1
-# 		return (1+recursion(branches(b)))
-# 	for b in branches(t):
-# 		result.append(recursion(b))
-# 	return max(result)
-#
-#
+def max_path_sum(t):
+    if(is_leaf(t)):
+        return 1
+    for i in branches(t):
+        return 1+max_path_sum(i)
+    return max([1+max_path_sum(i) for i in branches(t)])
+
+
 # t = tree(1,[tree(5,[tree(1),tree(3)]),tree(10)])
 # print_tree(t)
-# print(max_path_sum(t))
+# print("最大长度为："+str(max_path_sum(t)))
 
 
 ################################################################################################################################
-#  Question 1.2
-# def max_path_sum(t):
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-# t = tree(1,[tree(5,[tree(1),tree(3)]),tree(10)])
+ # Question 1.2
+def max_path_sum(t):
+    print("未完成！！！！！！！")
+    pass
+
+
+
+
+
+
+
+
+
+
+
+# t = tree(1, [tree(5, [tree(1), tree(3)]), tree(10)])
 # print_tree(t)
+######################################################################################################################################################
+# Question 1.3
+def square_tree(t):
+    if(is_leaf(t)):
+        return [label(t)**2]
+    return tree(label(t)**2,[square_tree(i) for i in branches(t)])
+
+numbers = tree(1,[tree(2,[tree(3),tree(4)]),tree(5,[tree(6,[tree(7)]),tree(8)])])
+print_tree(square_tree(numbers))
+
+
+######################################################################################################################################################
+#Question 1.4
+
+def find_path(tree,x):
+    print("未完成！！！！！！！！！！！！！！！")
+    pass
+
+
+######################################################################################################################################################
+#Question 2.2
+
+def prune_binary(t, nums):
+    print("未完成！！！！！！！！！！！！！！！！！！")
+    pass

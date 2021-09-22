@@ -309,7 +309,8 @@ def add_trees(t1, t2):
       5
     """
     "*** YOUR CODE HERE ***"
-
+    print("未完成！！！！！！！！！！！！！！！！！！！！！！！！！！！！！")
+    pass
 
 # def build_successors_table(tokens):
 #     """Return a dictionary: keys are words; values are lists of successors.
