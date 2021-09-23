@@ -61,11 +61,13 @@ def berry_finder(t):
 		return berry_finder(i)
 	return False
 
-scrat = tree('berry')
-sproul = tree('roots', [tree('branch1', [tree('leaf'), tree('berry')]), tree('branch2')])
-numbers = tree(1, [tree(2), tree(3, [tree(4), tree(5)]), tree(6, [tree(7)])])
-t = tree(1, [tree('berry',[tree('not berry')])])
+def recursion(n,m):
+	if (m==1 or m==0):
+		return 1
+	if(n-m>m):
+		return recursion(n-m,m)+recursion(n,m-1)
+	else:
+		return recursion(n-m,n-m) +recursion(n,m-1)
 
-# print(sprout_leaves(sproul,[5,6]))
-print(berry_finder(sproul))
-print()
+
+print(recursion(10,8))
