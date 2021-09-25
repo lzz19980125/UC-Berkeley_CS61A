@@ -309,8 +309,22 @@ def add_trees(t1, t2):
       5
     """
     "*** YOUR CODE HERE ***"
-    print("未完成！！！！！！！！！！！！！！！！！！！！！！！！！！！！！")
-    pass
+    #以下为答案的逻辑
+    if (t1 == None):
+        return t2
+    if (t2 == None):
+        return t1
+    if (is_leaf(t1) & is_leaf(t2)):
+        return tree(label(t1) + label(t2))
+    new_label = label(t1) + label(t2)
+    t1_branches = [i for i in branches(t1)]
+    t2_branches = [j for j in branches(t2)]
+    if (len(t1_branches) > len(t2_branches)):
+        t2_branches += [None for i in range(len(t2_branches), len(t1_branches))]
+    if (len(t1_branches) < len(t2_branches)):
+        t1_branches += [None for i in range(len(t1_branches), len(t2_branches))]
+    zipper = zip(t1_branches, t2_branches)
+    return tree(new_label, [add_trees(m, n) for m, n in zipper])
 
 # def build_successors_table(tokens):
 #     """Return a dictionary: keys are words; values are lists of successors.
