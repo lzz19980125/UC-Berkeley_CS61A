@@ -59,21 +59,14 @@ def max_path_sum(t):
 ################################################################################################################################
  # Question 1.2
 def max_path_sum(t):
-    print("未完成！！！！！！！")
-    pass
-
-
-
-
-
-
-
-
-
+    if(is_leaf(t)):
+        return label(t)
+    return label(t)+max([max_path_sum(i) for i in branches(t)])
 
 
 # t = tree(1, [tree(5, [tree(1), tree(3)]), tree(10)])
 # print_tree(t)
+# print(max_path_sum(t))
 ######################################################################################################################################################
 # Question 1.3
 def square_tree(t):
@@ -81,18 +74,24 @@ def square_tree(t):
         return [label(t)**2]
     return tree(label(t)**2,[square_tree(i) for i in branches(t)])
 
-numbers = tree(1,[tree(2,[tree(3),tree(4)]),tree(5,[tree(6,[tree(7)]),tree(8)])])
-print_tree(square_tree(numbers))
+# numbers = tree(1,[tree(2,[tree(3),tree(4)]),tree(5,[tree(6,[tree(7)]),tree(8)])])
+# print_tree(square_tree(numbers))
 
 
 ######################################################################################################################################################
 #Question 1.4
 
-def find_path(tree,x):
-    print("未完成！！！！！！！！！！！！！！！")
-    pass
+def find_path(t,x):
+    if(label(t) ==x):
+        return [label(t)]
+    for i in branches(t):
+        if(find_path(i,x)!=None):
+            return [label(t)]+find_path(i,x)
 
-
+# t1 = tree(2, [tree(7, [tree(3), tree(6, [tree(5), tree(11)])] ), tree(15)])
+# t2 = tree(2,[tree(4),tree(5)])
+# print(find_path(t1,5))
+# print(find_path(t1,10))
 ######################################################################################################################################################
 #Question 2.2
 
