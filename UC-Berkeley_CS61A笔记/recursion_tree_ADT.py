@@ -1,14 +1,17 @@
+# constructor
 def tree(label, branches=[]):
 	for branch in branches:
 		assert is_tree(branch), 'branches must be trees'
 	return [label] + list(branches)
 
+#selector
 def label(tree):
 	return tree[0]
 
 def branches(tree):
 	return tree[1:]
 
+#other functions
 def is_tree(tree):
 	if type(tree) != list or len(tree) < 1:
 		return False
@@ -20,25 +23,8 @@ def is_tree(tree):
 def is_leaf(tree):
 	return not branches(tree)
 
-def insertBranches(t,b):
-	def recursion(t):
-		if (is_leaf(t)):
-			t = tree(t,b)
-			return
-		return recursion(branches(t))
-	for i in branches(t):
-		recursion(i)
-	return t
+def print_tree(t, indent=0):
+	print('  ' * indent + str(label(t)))
+	for b in branches(t):
+		print_tree(b, indent + 1)
 
-def getRootVal(tree):
-	pass
-
-def getLeftChild(tree):
-	pass
-
-def getRightChild(tree):
-	pass
-
-sproul = tree('roots', [tree('branch1', [tree('leaf'), tree('berry')]), tree('branch2')])
-t = insertBranches(sproul,[5,6])
-print(t)
