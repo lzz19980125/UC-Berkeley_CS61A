@@ -43,6 +43,7 @@ print(next(v))
 # print(next(k))
 #iter在运行期间，不能够对数据结构进行结构更改（如添加或者删除等等），如果更改会iter会进行报错
 
+#有一些内建的函数return iterable，譬如下面现实的map()
 def double_and_print(x):
         print('***', x, '=>', 2*x, '***')
         return 2*x
@@ -53,6 +54,69 @@ print(next(doubled))
 print(next(doubled))
 print("***********")
 print(list(doubled))
+
+#除此之外，filter(),zip(),reversed()函数都遵从惰性计算
+
+#for语句的本质：在python中，序列可以通过其__iter__返回迭代器，并且该迭代器拥有__next__()方法。
+#以下可以用while+异常处理去模拟for语句的实质：
+counts = [1,2,3]
+i = counts.__iter__()
+try:
+        while True:
+                item = i.__next__()
+                print(item)
+except StopIteration:
+        pass
+print()
+
+#以上语句等价于：
+for item in counts:
+        print(item)
+
+#generators以及yeild声明：
+#在generator函数中，利用yeild声明返回iterable
+def letters_generator(start='a',end='d'):
+    current = start
+    while current <=end:
+        yield current
+        current = chr(ord(current)+1)
+for letter in letters_generator():
+    print(letter)
+
+letters = letters_generator()
+print(type(letters))
+print(letters.__next__())
+print(letters.__next__())
+print(letters.__next__())
+print(letters.__next__())
+print("****************")
+
+class Letters:
+    def __init__(self,start = 'a',end = 'e'):
+        self.start = start
+        self.end = end
+    def __iter__(self):
+        return letters_generator(self.start,self.end)
+
+b_to_k = Letters('b','k')
+first_iterator = b_to_k.__iter__()
+print(next(first_iterator))
+print(next(first_iterator))
+
+second_iterator = iter(b_to_k)
+print(second_iterator.__next__())
+print(first_iterator.__next__())
+print(first_iterator.__next__())
+print(second_iterator.__next__())
+print(second_iterator.__next__())
+print("************************")
+
+
+
+
+
+
+
 
 
 
