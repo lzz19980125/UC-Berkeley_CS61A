@@ -111,7 +111,13 @@ print(second_iterator.__next__())
 print(second_iterator.__next__())
 print("************************")
 
-
+s = [[1, 2]]
+i = iter(s)
+j = iter(next(i))
+print(next(j))
+s.append(3)
+print(next(i))
+print(next(j))
 
 
 
