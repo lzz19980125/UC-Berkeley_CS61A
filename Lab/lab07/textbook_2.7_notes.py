@@ -16,7 +16,7 @@ print("****************")
 
 #多重表示（对应java的多态）
 #特殊方法special methods：在类构建时，自动调用__init__,在print时自动调用__str__，
-#在需要有交互式值显示的场景中，自动调用__repr__
+#在需要有交互式值显示的场景中，自动调用__repr__，在使用[]进行索引时，自动调用object中的__getitem__方法
 #有时需要动态为object增加属性（所谓动态，就是在程序执行的过程中为object增加属性，而不是事先定义好的）。此时应该应用装饰器 @property
 # @ property的作用是：在不使用括号表达式的情况下能够调用函数，请看如下ComplexRI以及ComplexMA的定义方法：
 
@@ -204,3 +204,4 @@ print(Rational(-1,2)*ComplexMA(4,pi/2))
 #对class Number进行强制转换的重写(此文件最上方class Number中注释的一部分)：
 print("***********************")
 print(ComplexRI(1.5,0)+Rational(3,2))
+

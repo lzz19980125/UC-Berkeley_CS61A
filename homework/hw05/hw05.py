@@ -36,6 +36,41 @@ class VendingMachine:
     'Here is your soda.'
     """
     "*** YOUR CODE HERE ***"
+    def __init__(self,product_name,price):
+        self.funds = 0
+        self.price = price
+        self.product_name = product_name
+        self.number = 0
+
+    def vend(self):
+        if(self.number ==0):
+            return 'Inventory empty. Restocking required.'
+        elif(self.funds<self.price):
+            return 'You must add ${0} more funds.'.format(self.price-self.funds)
+        elif(self.funds == self.price):
+            self.funds =0
+            self.number -=1
+            return 'Here is your {0}.'.format(self.product_name)
+        else:
+            words =  'Here is your {0} and ${1} change.'.format(self.product_name,self.funds-self.price)
+            self.funds = 0
+            self.number -=1
+            return words
+
+    def add_funds(self,funds):
+        if (self.number == 0):
+            return 'Inventory empty. Restocking required. Here is your ${0}.'.format(funds)
+        else:
+            self.funds += funds
+            return  'Current balance: ${0}'.format(self.funds)
+
+    def restock(self,number):
+        self.number +=number
+        return 'Current {0} stock: {1}'.format(self.product_name,self.number)
+
+
+
+
 
 
 class Mint:
@@ -74,9 +109,12 @@ class Mint:
 
     def create(self, kind):
         "*** YOUR CODE HERE ***"
+        return kind(self.year)
 
     def update(self):
         "*** YOUR CODE HERE ***"
+        self.year = Mint.current_year
+        return
 
 class Coin:
     def __init__(self, year):
@@ -84,6 +122,7 @@ class Coin:
 
     def worth(self):
         "*** YOUR CODE HERE ***"
+        return self.cents + (Mint.current_year-self.year- 50)
 
 class Nickel(Coin):
     cents = 5

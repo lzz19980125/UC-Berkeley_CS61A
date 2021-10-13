@@ -46,12 +46,11 @@ def free_bacon(score):
     # BEGIN PROBLEM 2
     "*** YOUR CODE HERE ***"
     # END PROBLEM 2
-
-    n=1
-    while(pi // 10**n !=0):
-        n +=1
-    pi = pi // 10**(n-score-1)
-    return pi%10 + 3
+    n = 1
+    while (pi // 10 ** n != 0):
+        n += 1
+    pi = pi // 10 ** (n - score - 1)
+    return pi % 10 + 3
 
 
 
@@ -77,7 +76,6 @@ def take_turn(num_rolls, opponent_score, dice=six_sided):
         return roll_dice(num_rolls, dice)
 
 
-
 def extra_turn(player_score, opponent_score):
     """Return whether the player gets an extra turn."""
     return (pig_pass(player_score, opponent_score) or
@@ -98,24 +96,19 @@ def swine_align(player_score, opponent_score):
     # BEGIN PROBLEM 4a
     "*** YOUR CODE HERE ***"
     # END PROBLEM 4a
-
-    if(player_score == 0 | opponent_score == 0):
+    if (player_score == 0 | opponent_score == 0):
         return False
-    if(player_score > opponent_score):
-        bigger,smaller = player_score,opponent_score
-    else:
-        bigger,smaller = opponent_score,player_score
-    n = factor = 2
-    while(n<bigger):
-        if((bigger % n == 0) & (smaller % n ==0)):
-            factor = n
-        n +=1
-    if (factor >=10):
+    def max_component(c, d):
+        bigger = max(c, d)
+        max_con = smaller = min(c, d)
+        while (max_con>=2):
+            if ((bigger % max_con == 0) & (smaller % max_con == 0)):
+                return max_con
+            max_con -= 1
+        return max_con
+    if (max_component(player_score, opponent_score) >= 10):
         return True
-    else:
-        return False
-
-
+    return False
 
 
 def pig_pass(player_score, opponent_score):
@@ -138,11 +131,10 @@ def pig_pass(player_score, opponent_score):
     # BEGIN PROBLEM 4b
     "*** YOUR CODE HERE ***"
     # END PROBLEM 4b
-    if((opponent_score - player_score <3) & (opponent_score - player_score >0)):
+    if ((opponent_score - player_score < 3) & (opponent_score - player_score > 0)):
         return True
     else:
         return False
-
 
 def other(who):
     """Return the other player, for a player WHO numbered 0 or 1.
@@ -178,20 +170,21 @@ def play(strategy0, strategy1, score0=0, score1=0, dice=six_sided,
     say:        The commentary function to call at the end of the first turn.
     """
     who = 0  # Who is about to take a turn, 0 (first) or 1 (second)
-    f1 = announce_lead_changes()
-    f2 = both(say_scores, f1)
-    while((score0 < goal) | (score1 < goal)):
+    # BEGIN PROBLEM 5
+    "*** YOUR CODE HERE ***"
+    while (score0 < goal and score1 < goal):
         if (who == 0):
-            score0 += take_turn(strategy0(score0,score1), score1, dice)
-            if(extra_turn(score0, score1)):
+            score0 += take_turn(strategy0(score0, score1), score1, dice)
+            while (extra_turn(score0, score1) and score0 < goal):
                 score0 += take_turn(strategy0(score0, score1), score1, dice)
-        who = other(who)
-        if (who == 1):
+        else:
             score1 += take_turn(strategy1(score1, score0), score0, dice)
-            if (extra_turn(score1, score0)):
+            while (extra_turn(score1, score0) and score1 < goal):
                 score1 += take_turn(strategy1(score1, score0), score0, dice)
-        f2 = f2(score0, score1)
+        who = other(who)
     return score0, score1
+
+
 
 
 
@@ -276,19 +269,21 @@ def announce_highest(who, last_score=0, running_high=0):
     assert who == 0 or who == 1, 'The who argument should indicate a player.'
     # BEGIN PROBLEM 7
     "*** YOUR CODE HERE ***"
-    # END PROBLEM 7
-    def say(score0,score1):
-        if(who == 0):
-            if((score0-last_score)> running_high ):
-                print((score0-last_score), "point(s)! The most yet for Player",who)
-                return announce_highest(who,score0,score0-last_score)
-            return announce_highest(who,score0,running_high)
-        if (who == 1):
-            if ((score1 - last_score) > running_high):
-                print((score1 - last_score), "point(s)! The most yet for Player", who)
+    def announce(score0, score1):
+        if (who == 0):
+            if (score0 - last_score > running_high):
+                print("{0} point(s)! The most yet for Player {1}".format(score0 - last_score, who))
+                return announce_highest(who, score0, score0 - last_score)
+            else:
+                return announce_highest(who, score0, running_high)
+        else:
+            if (score1 - last_score > running_high):
+                print("{0} point(s)! The most yet for Player {1}".format(score1 - last_score, who))
                 return announce_highest(who, score1, score1 - last_score)
-            return announce_highest(who, score1, running_high)
-    return say
+            else:
+                return announce_highest(who, score1, running_high)
+    return announce
+    # END PROBLEM 7
 
 
 #######################
@@ -328,14 +323,14 @@ def make_averaged(original_function, trials_count=1000):
     """
     # BEGIN PROBLEM 8
     "*** YOUR CODE HERE ***"
-    # END PROBLEM 8
-    def say():
-        sum = i = 0
-        while (i < trials_count):
+    def points():
+        sum,times = 0,trials_count
+        while(times>0):
             sum += original_function()
-            i += 1
-        return sum / trials_count
-    return say
+            times -=1
+        return sum/trials_count
+    return points
+    # END PROBLEM 8
 
 
 def max_scoring_num_rolls(dice=six_sided, trials_count=1000):
@@ -349,16 +344,22 @@ def max_scoring_num_rolls(dice=six_sided, trials_count=1000):
     """
     # BEGIN PROBLEM 9
     "*** YOUR CODE HERE ***"
+    def roll_trials(roll_num):
+        sum , times = 0,trials_count
+        while(times>0):
+            sum +=roll_dice(roll_num,dice)
+            times -=1
+        return sum/trials_count
+
+    result , current_num = 10,9
+    while(current_num>=1):
+        result_sum = roll_trials(result)
+        current_sum = roll_trials(current_num)
+        if(current_sum>=result_sum):
+            result = current_num
+        current_num -=1
+    return result
     # END PROBLEM 9
-    n = 1
-    max_ave = 0
-    while n <= 10:
-        now_ave = make_averaged(roll_dice)
-        if(now_ave(n,dice) > max_ave):
-            max_ave = now_ave(n,dice)
-            max_roll = n
-        n += 1
-    return max_roll
 
 
 def winner(strategy0, strategy1):
