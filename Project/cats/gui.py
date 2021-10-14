@@ -15,7 +15,7 @@ PARAGRAPH_PATH = "./data/sample_paragraphs.txt"
 WORDS_LIST = cats.lines_from_file('data/words.txt')
 WORDS_SET = set(WORDS_LIST)
 LETTER_SETS = [(w, set(w)) for w in WORDS_LIST]
-SIMILARITY_LIMIT = 2
+SIMILARITY_LIMIT = 10
 
 
 @route

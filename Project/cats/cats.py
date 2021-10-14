@@ -18,11 +18,11 @@ def choose(paragraphs, select, k):
     # BEGIN PROBLEM 1
     "*** YOUR CODE HERE ***"
     # END PROBLEM 1
-
-    results = [x for x in paragraphs if (select(x)) ]
-    if (results == None):
+    result = [x for x in paragraphs if(select(x))]
+    if(len(result)<k):
         return None
-    return results[k]
+    return result[k]
+
 
 def about(topic):
     """Return a select function that returns whether a paragraph contains one
@@ -37,13 +37,27 @@ def about(topic):
     assert all([lower(x) == x for x in topic]), 'topics should be lowercase.'
     # BEGIN PROBLEM 2
     "*** YOUR CODE HERE ***"
-    # END PROBLEM 2
+    def judge(topic_words,target_words):
+        topic_words = topic_words.lower()
+        target_words = target_words.lower()
+        i = j = 0
+        for j in range(len(target_words)):
+            if (target_words[j] == topic_words[0]):
+                break
+        #这里有些bug：万一i没走完，但j走完了，就会报错！
+        while(i<len(topic_words)):
+            if(target_words[j]!=topic_words[i]):
+                return False
+            i +=1
+            j +=1
+        return True
+    def select(words):
+        result = [x for x in topic if(judge(x,words))]
+        if(len(result)!=0):
+            return True
+    return select
 
-    def f(x):
-        for j in topic:
-            if j in lower(x):
-                return True
-    return f
+    # END PROBLEM 2
 
 
 def accuracy(typed, reference):
@@ -53,7 +67,7 @@ def accuracy(typed, reference):
     >>> accuracy('Cute Dog!', 'Cute Dog.')
     50.0
     >>> accuracy('A Cute Dog!', 'Cute Dog.')
-    33.33333333333333
+    0.0
     >>> accuracy('cute Dog.', 'Cute Dog.')
     50.0
     >>> accuracy('Cute Dog. I say!', 'Cute Dog.')
@@ -67,19 +81,29 @@ def accuracy(typed, reference):
     reference_words = split(reference)
     # BEGIN PROBLEM 3
     "*** YOUR CODE HERE ***"
-    # END PROBLEM 3
+    def have(typed_word,reference):
+        result =  [x for x in reference if(typed_word.lower() == x.lower())]
+        if (len(result)==0):
+            return False
+        return True
+
     typed_words = typed.split()
     reference_words = reference.split()
-    if len(typed_words) == 0:
+    if (len(typed_words) == 0):
         return 0.0
     sum = 0
-    for i in typed_words:
-        for j in reference_words:
-            if i in j:
-                sum += 1
-                continue
+    for i in range(len(typed_words)):
+        if (not have(typed_words[i],reference_words)):
+            break
+        flag = 0
+        for j in range(len(typed_words[i])):
+            if (typed_words[i][j] != reference_words[i][j]):
+                flag = 1
+                break
+        if (flag == 0):
+            sum += 1
     return (sum / len(typed_words)) * 100
-
+    # END PROBLEM 3
 
 
 def wpm(typed, elapsed):
@@ -87,8 +111,9 @@ def wpm(typed, elapsed):
     assert elapsed > 0, 'Elapsed time must be positive'
     # BEGIN PROBLEM 4
     "*** YOUR CODE HERE ***"
+    return (len(typed)/5)*(60/elapsed)
+
     # END PROBLEM 4
-    return len(typed)/5/(elapsed/60)
 
 
 def autocorrect(user_word, valid_words, diff_function, limit):
@@ -98,9 +123,19 @@ def autocorrect(user_word, valid_words, diff_function, limit):
     """
     # BEGIN PROBLEM 5
     "*** YOUR CODE HERE ***"
+    if (user_word in valid_words):
+        return user_word
+    smallest , reuslt  = float('inf'),None
+    for i in valid_words:
+        if(diff_function(user_word,i,limit)<smallest):
+            smallest = diff_function(user_word,i,limit)
+            result = i
+    if(smallest >limit):
+        return user_word
+
+    else:
+        return result
     # END PROBLEM 5
-
-
 
 
 def shifty_shifts(start, goal, limit):
@@ -109,7 +144,24 @@ def shifty_shifts(start, goal, limit):
     their lengths.
     """
     # BEGIN PROBLEM 6
-    assert False, 'Remove this line'
+    # assert False, 'Remove this line'
+    def records(start, goal, count, limit):
+        if (count > limit):
+            return limit + 1
+        if (len(start) == 1):
+            if (len(goal) == 1):
+                if (start[0] == goal[0]):
+                    return count
+                return count + 1
+            if (start[0] == goal[0]):
+                return count + len(goal[1:])
+            return count + 1 + len(goal[1:])
+        if (start[0] == goal[0]):
+            return records(start[1:], goal[1:], count, limit)
+        return records(start[1:], goal[1:], count + 1, limit)
+    return records(start, goal, 0, limit)
+
+
     # END PROBLEM 6
 
 
@@ -138,7 +190,8 @@ def pawssible_patches(start, goal, limit):
 
 def final_diff(start, goal, limit):
     """A diff function. If you implement this function, it will be used."""
-    assert False, 'Remove this line to use your final_diff function'
+    # assert False, 'Remove this line to use your final_diff function'
+    return shifty_shifts(start, goal, limit)
 
 
 ###########
